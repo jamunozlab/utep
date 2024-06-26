@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
 """
-This script is responsible for iterating over the variables that will be modified in an experiment, creating a directory for each combination of interest with all the files necessary to run and individual simulation in that directory, and submitting the job to the Slurm worload manager.
+This script is responsible for iterating over the variables that will be modified in an experiment,
+creating a directory for each combination of interest with all the files necessary to run an individual
+simulation in that directory, and submitting the job to the Slurm worload manager.
 
-The user must provide code to modify the variables of interest in sim_params_dict and sbatch_options_dict, as well as a description of the experiment. The function new_simulation_from_default should be called once for each simulation. 
+The user must provide code to modify the variables of interest in sim_params_dict and sbatch_options_dict,
+as well as a description of the experiment. The function new_simulation_from_default should be called
+once for each simulation. The script should be executed from the command line. 
 """
 
 import os, argparse
@@ -15,13 +19,15 @@ from utils.config import simulations_path, executables_path, executable, experim
 
 
 if __name__ == "__main__":
-    
-     
+
     simulation_ids = []
 
     #### SCRIPT SHOULD BE BELOW ####      
     
-    experiment_description = 'This experiment assigns the values [1.0nm, 1.5nm, 2.0nm] to the thicknesses to the dielectric and ferroelectro layers of a FerroX stack and creates a directory for each combination (total of 9) with all the files necessary to run each simulation. It keeps the domain cell size constant.'
+    experiment_description = """This experiment assigns the values [1.0nm, 1.5nm, 2.0nm] to the
+        thicknesses to the dielectric and ferroelectro layers of a FerroX stack and creates a
+        directory for each combination (total of 9) with all the files necessary to run each simulation.
+        It keeps the domain cell size constant."""
     
     DE_loz = 10.0e-9
     incrs = [1.0, 1.5, 2.0]
