@@ -10,19 +10,17 @@ as well as a description of the experiment. The function new_simulation_from_def
 once for each simulation. The script should be executed from the command line. 
 """
 
-import os, argparse
 import numpy as np
 
 from utils.new_simulation_from_default import new_simulation_from_default
 from utils.dir_structure_utils import find_next_available_file
 from utils.config import simulations_path, executables_path, executable, experiments_path
 
-
 if __name__ == "__main__":
 
     simulation_ids = []
 
-    #### SCRIPT SHOULD BE BELOW ####      
+#### SCRIPT SHOULD BE BELOW ####      
     
     experiment_description = """This experiment assigns the values [1.0nm, 1.5nm, 2.0nm] to the
         thicknesses to the dielectric and ferroelectro layers of a FerroX stack and creates a
@@ -58,7 +56,7 @@ if __name__ == "__main__":
             count = count + 1
 
             simulation_id = new_simulation_from_default(simulations_path, executables_path, executable, 
-                                                        sim_params_dict, sbatch_options_dict, submit_job=True)
+                                                        sim_params_dict, sbatch_options_dict, submit_job=False)
             simulation_ids.append(simulation_id)
         
     experiment_id = find_next_available_file('experiment', experiments_path)
