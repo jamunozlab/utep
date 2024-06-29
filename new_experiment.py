@@ -10,22 +10,40 @@ as well as a description of the experiment. The function new_simulation_from_def
 once for each simulation. The script should be executed from the command line. 
 """
 
+import argparse
 import numpy as np
 
 from utils.new_simulation_from_default import new_simulation_from_default
 from utils.dir_structure_utils import find_next_available_file
 from utils.config import simulations_path, executables_path, executable, experiments_path
+import utils.default_dictionaries as default_dictionaries
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(
+                    prog='new_experiment',
+                    description='Create new experiment. User must provide the name of a dictionary' +
+                                    'in default_dictionaries.py with input parameters and default values.',
+                    epilog='')
+    
+    parser.add_argument('default_input_dictionary_name') # positional argument
+    parser.add_argument('-t', '--test', action='store_false')  # on/off flag
+    
+    submit_job=True
 
+    args = parser.parse_args()
+    submit_job = args.test
+    exec('default_input_dictionary = default_dictionaries.' + args.default_input_dictionary_name)
+    
     simulation_ids = []
+
 
 #### SCRIPT SHOULD BE BELOW ####      
     
     experiment_description = """This experiment assigns the values [1.0nm, 1.5nm, 2.0nm] to the
         thicknesses to the dielectric and ferroelectro layers of a FerroX stack and creates a
         directory for each combination (total of 9) with all the files necessary to run each simulation.
-        It keeps the domain cell size constant."""
+        It keeps the domain cell size constant. Moved input parameter dictionary to default_dictionaries"""
     
     DE_loz = 10.0e-9
     incrs = [1.0, 1.5, 2.0]
@@ -55,8 +73,8 @@ if __name__ == "__main__":
             sbatch_options_dict = { }
             count = count + 1
 
-            simulation_id = new_simulation_from_default(simulations_path, executables_path, executable, 
-                                                        sim_params_dict, sbatch_options_dict, submit_job=False)
+            simulation_id = new_simulation_from_default(default_input_dictionary, simulations_path, executables_path, executable,
+                                                        sim_params_dict, sbatch_options_dict, submit_job=submit_job)
             simulation_ids.append(simulation_id)
         
     experiment_id = find_next_available_file('experiment', experiments_path)
