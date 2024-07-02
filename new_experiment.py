@@ -15,11 +15,10 @@ import numpy as np
 
 from utils.new_simulation_from_default import new_simulation_from_default
 from utils.dir_structure_utils import find_next_available_file
-from utils.config import simulations_path, executables_path, executable, experiments_path
+from utils.config import simulations_path, executables_path, executable, experiments_path, other_files
 import utils.default_dictionaries as default_dictionaries
 
 if __name__ == "__main__":
-    
     parser = argparse.ArgumentParser(
                     prog='new_experiment',
                     description='Create new experiment. User must provide the name of a dictionary' +
@@ -40,11 +39,40 @@ if __name__ == "__main__":
 
 #### SCRIPT SHOULD BE BELOW ####      
     
-    experiment_description = """This experiment assigns the values [1.0nm, 1.5nm, 2.0nm] to the
-        thicknesses to the dielectric and ferroelectro layers of a FerroX stack and creates a
-        directory for each combination (total of 9) with all the files necessary to run each simulation.
-        It keeps the domain cell size constant. Moved input parameter dictionary to default_dictionaries"""
+    experiment_description = """Test of MagneX"""
     
+    nsteps = [40000, 4000, 400]
+    
+    count = 0
+    for nstep in nsteps:
+        sim_params_dict = {  
+               "nsteps"   :   nstep,
+             }
+    
+        sbatch_options_dict = { }
+        count = count + 1
+
+        simulation_id = new_simulation_from_default(default_input_dictionary, simulations_path, executables_path, executable,
+                                                        sim_params_dict, sbatch_options_dict, other_files=other_files, submit_job=submit_job)
+        simulation_ids.append(simulation_id)
+        
+    experiment_id = find_next_available_file('experiment', experiments_path)
+
+#### SCRIPT SHOULD BE ABOVE ####  
+
+    lines = experiment_description + str('\n')
+    for simulation_id in simulation_ids:
+        lines = lines + simulation_id + str('\n')
+
+    f = open(experiments_path+experiment_id, "w")
+    f.writelines(lines)
+    f.close()
+    
+    print(experiment_id)
+    print(simulation_ids)
+    
+    
+""" 
     DE_loz = 10.0e-9
     incrs = [1.0, 1.5, 2.0]
     
@@ -78,16 +106,4 @@ if __name__ == "__main__":
             simulation_ids.append(simulation_id)
         
     experiment_id = find_next_available_file('experiment', experiments_path)
-
-#### SCRIPT SHOULD BE ABOVE ####  
-
-    lines = experiment_description + str('\n')
-    for simulation_id in simulation_ids:
-        lines = lines + simulation_id + str('\n')
-
-    f = open(experiments_path+experiment_id, "w")
-    f.writelines(lines)
-    f.close()
-    
-    print(experiment_id)
-    print(simulation_ids)
+"""
