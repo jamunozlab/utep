@@ -1,0 +1,13 @@
+This experiment assigns the values [1.0nm, 1.5nm, 2.0nm] to the
+        thicknesses to the dielectric and ferroelectro layers of a FerroX stack and creates a
+        directory for each combination (total of 9) with all the files necessary to run each simulation.
+        It keeps the domain cell size constant.
+simulation000000
+simulation000001
+simulation000002
+simulation000003
+simulation000004
+simulation000005
+simulation000006
+simulation000007
+simulation000008
