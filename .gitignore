@@ -1,5 +1,5 @@
 __pycache__/
 .ipynb_checkpoints
-executables/*
-experiments/*
-simulations/*
+executables/**
+experiments/**
+simulations/**
